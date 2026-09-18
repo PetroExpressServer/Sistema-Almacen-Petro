@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Personal {
+  id            Int          @id @default(autoincrement())
+  nombres       String
+  apellidos     String
+  dni           String       @unique
+  cargo         String
+  estado        String       @default("Activo") // Activo, Cesado
+  fecha_ingreso DateTime?
+  fecha_cese    DateTime?
+  movimientos   Movimiento[]
+}
+
+model Producto {
+  id                     Int                    @id @default(autoincrement())
+  codigo                 String                 @unique
+  nombre                 String
+  descripcion            String?
+  categoria              String                 @default("Consumible")
+  medidas                String?
+  stock_actual           Int                    @default(0)
+  stock_minimo           Int?
+  unidad_medida          String
+  observaciones          String?
+  pagina                 String?
+  foto                   String?
+  activo                 Boolean                @default(true)
+  movimientos            Movimiento[]
+  requerimiento_detalles RequerimientoDetalle[]
+}
+
+model Movimiento {
+  id           Int      @id @default(autoincrement())
+  producto_id  Int
+  personal_id  Int?     // Opcional para ingresos si no están asignados a un trabajador
+  tipo         String   // Ingreso, Salida, Devolucion
+  cantidad     Int
+  fecha        DateTime @default(now())
+  observaciones String?
+
+  producto Producto  @relation(fields: [producto_id], references: [id])
+  personal Personal? @relation(fields: [personal_id], references: [id])
+}
+
+model Requerimiento {
+  id            Int      @id @default(autoincrement())
+  fecha         DateTime @default(now())
+  estado        String   @default("Pendiente") // Pendiente, Atendido
+  observaciones String?
+  detalles      RequerimientoDetalle[]
+}
+
+model RequerimientoDetalle {
+  id               Int           @id @default(autoincrement())
+  requerimiento    Requerimiento @relation(fields: [requerimiento_id], references: [id], onDelete: Cascade)
+  requerimiento_id Int
+  
+  producto         Producto?     @relation(fields: [producto_id], references: [id])
+  producto_id      Int?
+  producto_nombre  String?       // Se usa si el producto_id es null (producto nuevo)
+  
+  cantidad         Int
+  cantidad_recibida Int          @default(0)
+}
+
+model EventoCalendario {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  descripcion String?
+  fecha       DateTime
+  estado      String   @default("Pendiente") // Pendiente, Completado
+  createdAt   DateTime @default(now())
+}
