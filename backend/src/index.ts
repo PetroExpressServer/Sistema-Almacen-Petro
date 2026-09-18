@@ -362,7 +362,7 @@ app.post('/api/movimientos/masivo', async (req, res) => {
         }
       }
       return movimientosGenerados;
-    });
+    }, { timeout: 30000 });
 
     res.json({ success: true, movimientos: result });
   } catch (error: any) {
@@ -413,7 +413,7 @@ app.post('/api/movimientos/batch', async (req, res) => {
         movimientosGenerados.push(mov);
       }
       return movimientosGenerados;
-    });
+    }, { timeout: 30000 });
 
     res.json({ success: true, movimientos: result });
   } catch (error: any) {
@@ -496,9 +496,10 @@ app.post('/api/requerimientos', async (req, res) => {
       include: { detalles: true }
     });
     res.json(nuevo);
-  } catch (error) {
-    res.status(400).json({ error: 'Error creando requerimiento' });
-  }
+    } catch (error) {
+      console.error("CREATE REQ ERROR:", error);
+      res.status(400).json({ error: 'Error creando requerimiento' });
+    }
 });
 
 app.put('/api/requerimientos/:id/atender', async (req, res) => {
