@@ -63,14 +63,14 @@ export default function Requerimientos() {
     if (formData.detalles.length === 0) return alert('Debe agregar al menos un artículo');
     
     // Preparar payload
-    const payload = {
-      observaciones: formData.observaciones,
-      detalles: formData.detalles.map(d => ({
-        producto_id: d.isNuevo ? null : Number(d.producto_id),
-        producto_nombre: d.isNuevo ? d.producto_nombre : null,
-        cantidad: Number(d.cantidad)
-      }))
-    };
+      const payload = {
+        observaciones: formData.observaciones,
+        detalles: formData.detalles.map(d => ({
+          producto_id: d.isNuevo ? null : (d.producto_id ? Number(d.producto_id) : null),
+          producto_nombre: d.isNuevo ? d.producto_nombre : null,
+          cantidad: Number(d.cantidad)
+        }))
+      };
 
     try {
       await axios.post('/api/requerimientos', payload);
