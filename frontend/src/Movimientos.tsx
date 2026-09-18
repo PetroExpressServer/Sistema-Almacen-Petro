@@ -190,8 +190,12 @@ export default function Movimientos() {
 
   // Auto-cap max stock
   const handleCantidadChange = (val: string) => {
+    if (val === '') {
+      setCurrentItem({ ...currentItem, cantidad: '' as any });
+      return;
+    }
     let cant = parseInt(val, 10);
-    if (isNaN(cant) || cant < 1) cant = 1;
+    if (isNaN(cant) || cant < 0) cant = 0;
     
     if (formData.tipo === 'Salida' && currentItem.producto_id) {
       const prod = productos.find(p => p.id === Number(currentItem.producto_id));
