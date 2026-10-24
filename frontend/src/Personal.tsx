@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, UserMinus, UserPlus, Plus, X, Download, Edit } from 'lucide-react';
+import { Search, UserMinus, UserPlus, Plus, X, Download, Edit, History } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 export default function Personal() {
@@ -84,6 +84,17 @@ export default function Personal() {
     setIsModalOpen(false);
     setEditingId(null);
     setFormData({ dni: '', apellidos: '', nombres: '', cargo: '', epps: [] });
+  };
+
+  const openHistoryModal = async (persona: any) => {
+    setHistoryPersonal(persona);
+    try {
+      const res = await axios.get(`/api/movimientos?personal_id=${persona.id}`);
+      setHistoryMovimientos(res.data);
+      setIsHistoryModalOpen(true);
+    } catch (error) {
+      alert('Error obteniendo historial de movimientos');
+    }
   };
 
   const openCeseModal = async (persona) => {
@@ -232,6 +243,13 @@ export default function Personal() {
                     </span>
                   </td>
                   <td className="p-4 text-sm text-center flex justify-center gap-2">
+                    <button 
+                      onClick={() => openHistoryModal(p)}
+                      className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                      title="Ver Historial de Entregas"
+                    >
+                      <History size={18} />
+                    </button>
                     <button 
                       onClick={() => openEditModal(p)}
                       className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
@@ -479,10 +497,11 @@ export default function Personal() {
                     <th className="p-4 font-medium">Tipo</th>
                     <th className="p-4 font-medium">Articulo</th>
                     <th className="p-4 font-medium">Cant.</th>
+                    <th className="p-4 font-medium">Observaciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {historyMovimientos.map((m) => (
+                  {historyMovimientos.map((m: any) => (
                     <tr key={m.id} className="hover:bg-gray-50 transition-colors">
                       <td className="p-4 text-sm text-gray-600">{new Date(m.fecha).toLocaleString()}</td>
                       <td className="p-4 text-sm">
@@ -492,11 +511,20 @@ export default function Personal() {
                       </td>
                       <td className="p-4 text-sm text-gray-900">{m.producto?.nombre}</td>
                       <td className="p-4 text-sm font-semibold">{m.cantidad}</td>
+                      <td className="p-4 text-xs text-gray-600 max-w-[200px]">
+                        {m.observaciones ? (
+                          <span className="inline-block bg-gray-50 border border-gray-200 px-2 py-1 rounded text-gray-700 font-medium truncate max-w-full" title={m.observaciones}>
+                            {m.observaciones}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 italic">-</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                   {historyMovimientos.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="p-8 text-center text-gray-500">
+                      <td colSpan={5} className="p-8 text-center text-gray-500">
                         No hay registros de entregas para este trabajador.
                       </td>
                     </tr>

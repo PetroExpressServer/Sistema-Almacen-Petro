@@ -180,9 +180,10 @@ export default function Movimientos() {
     const pName = p ? p.nombre.toLowerCase() : '';
     const pe = personal.find(pers => pers.id === m.personal_id);
     const peName = pe ? (pe.nombres + ' ' + pe.apellidos).toLowerCase() : '';
+    const obs = m.observaciones ? m.observaciones.toLowerCase() : '';
     const s = search.toLowerCase();
     
-    return pName.includes(s) || peName.includes(s) || m.tipo.toLowerCase().includes(s);
+    return pName.includes(s) || peName.includes(s) || m.tipo.toLowerCase().includes(s) || obs.includes(s);
   });
 
   const totalPages = Math.ceil(filteredMovs.length / pageSize) || 1;
@@ -360,7 +361,7 @@ export default function Movimientos() {
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <input 
               type="text" 
-              placeholder="Buscar (artículo, persona, tipo)..." 
+              placeholder="Buscar (artículo, persona, tipo, observación)..." 
               className="p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500 text-sm flex-1 sm:w-64"
               value={search}
               onChange={(e) => {
@@ -388,6 +389,7 @@ export default function Movimientos() {
                 <th className="p-4 font-semibold">Artículo</th>
                 <th className="p-4 font-semibold">Entregado A</th>
                 <th className="p-4 font-semibold text-center">Cant.</th>
+                <th className="p-4 font-semibold">Observaciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm">
@@ -416,12 +418,24 @@ export default function Movimientos() {
                       {pe ? pe.nombres + ' ' + pe.apellidos : <span className="text-gray-400 italic">No asignado</span>}
                     </td>
                     <td className="p-4 text-center font-bold text-gray-900">{m.cantidad}</td>
+                    <td className="p-4 text-xs text-gray-600 max-w-[240px]">
+                      {m.observaciones ? (
+                        <span 
+                          className="inline-block bg-gray-50 border border-gray-200 px-2.5 py-1 rounded text-gray-700 truncate max-w-full font-medium" 
+                          title={m.observaciones}
+                        >
+                          {m.observaciones}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 italic">-</span>
+                      )}
+                    </td>
                   </tr>
                 );
               })}
               {paginatedMovs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-gray-500">
+                  <td colSpan={6} className="p-8 text-center text-gray-500">
                     No se encontraron movimientos.
                   </td>
                 </tr>
