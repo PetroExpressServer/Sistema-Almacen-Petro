@@ -137,52 +137,51 @@ export default function Inventario() {
   );
 
   return (
-    <div className="p-4 md:p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Catálogo de Inventario</h1>
+    <div className="p-2 sm:p-3 lg:p-4 w-full">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Catálogo de Inventario</h1>
         
-        <div className="flex w-full md:w-auto gap-4">
-          <div className="relative w-full md:w-64">
+        <div className="flex w-full md:w-auto gap-2.5">
+          <div className="relative w-full md:w-60">
             <input 
               type="text" 
               placeholder="Buscar artículo..." 
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              className="w-full pl-9 pr-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+            <Search className="absolute left-2.5 top-2 sm:top-2.5 text-gray-400" size={16} />
           </div>
           
-            <button 
-              onClick={handleExportExcel}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
-            >
-              <Download size={20} />
-              <span className="hidden sm:inline">Exportar Excel</span>
-            </button>
-            <button 
-              onClick={openCreateModal}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
-            >
-              <Plus size={20} />
-
+          <button 
+            onClick={handleExportExcel}
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
+          >
+            <Download size={16} />
+            <span className="hidden sm:inline">Exportar Excel</span>
+          </button>
+          <button 
+            onClick={openCreateModal}
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
+          >
+            <Plus size={16} />
             <span className="hidden sm:inline">Nuevo Artículo</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100 text-sm text-gray-500 uppercase tracking-wider">
-                <th className="p-4 font-medium w-16">Foto</th>
-                <th className="p-4 font-medium">Descripción del Artículo</th>
-                <th className="p-4 font-medium">Categoría</th>
-                <th className="p-4 font-medium">Medidas</th>
-                <th className="p-4 font-medium text-center">Stock Actual</th>
-                <th className="p-4 font-medium">U.M.</th>
-                <th className="p-4 font-medium text-center">Acciones</th>
+              <tr className="bg-gray-50 border-b border-gray-100 text-[11px] sm:text-xs text-gray-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 font-semibold w-12">Foto</th>
+                <th className="px-3 py-2.5 font-semibold">Descripción del Artículo</th>
+                <th className="px-3 py-2.5 font-semibold">Categoría</th>
+                <th className="px-3 py-2.5 font-semibold">Medidas</th>
+                <th className="px-3 py-2.5 font-semibold text-center">Stock Actual</th>
+                <th className="px-3 py-2.5 font-semibold">U.M.</th>
+                <th className="px-3 py-2.5 font-semibold text-center">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -190,23 +189,23 @@ export default function Inventario() {
                 const isLowStock = p.stock_minimo !== null && p.stock_actual <= p.stock_minimo;
                 return (
                   <tr key={p.id} className={`transition-colors ${isLowStock ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50'}`}>
-                    <td className="p-4">
+                    <td className="px-3 py-1.5">
                       {p.foto ? (
                         <img 
                           src={p.foto} 
                           alt={p.nombre} 
-                          className="w-10 h-10 object-cover rounded-md border border-gray-200 bg-white cursor-pointer hover:opacity-80 transition-opacity" 
+                          className="w-8 h-8 object-cover rounded border border-gray-200 bg-white cursor-pointer hover:opacity-80 transition-opacity" 
                           onClick={() => setZoomedImage(p.foto)}
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
-                          <ImageIcon size={18} />
+                        <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-gray-400">
+                          <ImageIcon size={14} />
                         </div>
                       )}
                     </td>
-                    <td className="p-4 text-sm text-gray-900 font-medium">{p.nombre}</td>
-                    <td className="p-4 text-sm">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium
+                    <td className="px-3 py-1.5 text-xs sm:text-sm text-gray-900 font-medium">{p.nombre}</td>
+                    <td className="px-3 py-1.5">
+                      <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold
                         ${p.categoria === 'EPP' ? 'bg-blue-100 text-blue-800' : 
                           p.categoria === 'Herramienta de Trabajo' ? 'bg-orange-100 text-orange-800' :
                           p.categoria === 'Útiles' ? 'bg-purple-100 text-purple-800' : 
@@ -215,31 +214,33 @@ export default function Inventario() {
                         {p.categoria}
                       </span>
                     </td>
-                    <td className="p-4 text-sm text-gray-500">{p.medidas || '-'}</td>
-                    <td className="p-4 text-sm font-semibold text-center flex justify-center items-center h-full">
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className={`px-2 py-1 rounded-full ${isLowStock ? 'bg-red-200 text-red-800' : p.stock_actual > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                    <td className="px-3 py-1.5 text-xs text-gray-500">{p.medidas || '-'}</td>
+                    <td className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-center">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${isLowStock ? 'bg-red-200 text-red-800' : p.stock_actual > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
                           {p.stock_actual}
                         </span>
-                        {isLowStock && <AlertTriangle size={16} className="text-red-500" title={`Stock por debajo del mínimo (${p.stock_minimo})`} />}
+                        {isLowStock && <AlertTriangle size={14} className="text-red-500" title={`Stock por debajo del mínimo (${p.stock_minimo})`} />}
                       </div>
                     </td>
-                    <td className="p-4 text-sm text-gray-500">{p.unidad_medida}</td>
-                    <td className="p-4 text-sm text-center flex justify-center gap-2">
-                      <button 
-                        onClick={() => openEditModal(p)}
-                        className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Editar Artículo"
-                      >
-                        <Edit size={18} />
-                      </button>
-                      <button 
-                        onClick={() => handleDelete(p.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Eliminar Artículo"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                    <td className="px-3 py-1.5 text-xs text-gray-500">{p.unidad_medida}</td>
+                    <td className="px-3 py-1.5 text-center">
+                      <div className="flex justify-center items-center gap-1">
+                        <button 
+                          onClick={() => openEditModal(p)}
+                          className="p-1.5 text-blue-500 hover:bg-blue-50 rounded transition-colors"
+                          title="Editar Artículo"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(p.id)}
+                          className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
+                          title="Eliminar Artículo"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );

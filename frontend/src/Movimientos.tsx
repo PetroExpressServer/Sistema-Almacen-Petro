@@ -208,18 +208,18 @@ export default function Movimientos() {
   };
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+    <div className="w-full flex flex-col xl:flex-row gap-3 lg:gap-4 items-start">
       
       {/* Formulario (Carrito) */}
-      <div className="w-full lg:w-[450px] shrink-0 flex flex-col gap-4">
+      <div className="w-full xl:w-[350px] 2xl:w-[380px] shrink-0 flex flex-col gap-3">
         
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">1. Datos Generales</h2>
-          <div className="space-y-4">
+        <div className="bg-white p-3.5 sm:p-4 rounded-xl shadow-xs border border-gray-100">
+          <h2 className="text-sm sm:text-base font-bold mb-2.5 text-gray-800">1. Datos Generales</h2>
+          <div className="space-y-2.5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Operación</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Tipo de Operación</label>
               <select 
-                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500"
+                className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-red-500 bg-white"
                 value={formData.tipo}
                 onChange={(e) => {
                   setFormData({...formData, tipo: e.target.value});
@@ -234,7 +234,7 @@ export default function Movimientos() {
 
             {formData.tipo !== 'Ingreso' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
                   {formData.tipo === 'Salida' ? 'Entregar a (Personal)' : 'Devuelto por (Personal)'}
                 </label>
                 <Select
@@ -243,16 +243,16 @@ export default function Movimientos() {
                   placeholder="Seleccione personal..."
                   value={persOptions.find(o => o.value === formData.personal_id) || null}
                   onChange={(selected) => setFormData({...formData, personal_id: selected ? selected.value : ''})}
-                  className="react-select-container"
+                  className="react-select-container text-xs sm:text-sm"
                   classNamePrefix="react-select"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Observaciones</label>
               <textarea 
-                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500"
+                className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-red-500"
                 rows={2}
                 placeholder="Motivo del movimiento, # de guía..."
                 value={formData.observaciones}
@@ -262,21 +262,22 @@ export default function Movimientos() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">2. Añadir Artículos</h2>
+        <div className="bg-white p-3.5 sm:p-4 rounded-xl shadow-xs border border-gray-100">
+          <h2 className="text-sm sm:text-base font-bold mb-2.5 text-gray-800">2. Añadir Artículos</h2>
           
-          <div className="space-y-4">
+          <div className="space-y-2.5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Artículo</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Artículo</label>
               <Select
                 options={prodOptions}
                 isClearable
                 placeholder="Buscar artículo..."
                 value={prodOptions.find(o => o.value === currentItem.producto_id) || null}
                 onChange={(selected) => setCurrentItem({...currentItem, producto_id: selected ? selected.value : '', cantidad: 1})}
+                className="text-xs sm:text-sm"
               />
               {lastDelivery && (
-                <div className="mt-2 text-[11px] font-medium text-blue-800 bg-blue-50 px-2 py-1.5 rounded flex items-center gap-1.5 border border-blue-100">
+                <div className="mt-1.5 text-[11px] font-medium text-blue-800 bg-blue-50 px-2 py-1 rounded flex items-center gap-1.5 border border-blue-100">
                   <AlertCircle size={12} className="shrink-0" />
                   Última entrega: {new Date(lastDelivery.fecha).toLocaleDateString()} ({lastDelivery.cantidad} unid.)
                 </div>
@@ -285,11 +286,11 @@ export default function Movimientos() {
 
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Cantidad</label>
                 <input 
                   type="number" 
                   min="1"
-                  className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500"
+                  className="w-full p-2 text-xs sm:text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-red-500 h-[38px]"
                   value={currentItem.cantidad}
                   onChange={(e) => handleCantidadChange(e.target.value)}
                 />
@@ -298,9 +299,9 @@ export default function Movimientos() {
                 <button 
                   onClick={handleAddToCart}
                   disabled={!currentItem.producto_id || currentItem.cantidad < 1}
-                  className="py-2 px-4 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 font-bold rounded-lg transition-colors flex items-center gap-2 h-[42px]"
+                  className="py-1.5 px-3 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 font-bold rounded-lg transition-colors flex items-center gap-1.5 h-[38px] text-xs sm:text-sm"
                 >
-                  <Plus size={18} /> Añadir
+                  <Plus size={16} /> Añadir
                 </button>
               </div>
             </div>
@@ -308,29 +309,29 @@ export default function Movimientos() {
         </div>
 
         {/* Lista / Carrito */}
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col gap-4">
-          <h2 className="text-xl font-bold text-gray-800 flex items-center justify-between">
+        <div className="bg-white p-3.5 sm:p-4 rounded-xl shadow-xs border border-gray-100 flex flex-col gap-2.5">
+          <h2 className="text-sm sm:text-base font-bold text-gray-800 flex items-center justify-between">
             3. Lista a procesar
-            <span className="bg-red-100 text-red-700 py-0.5 px-2.5 rounded-full text-sm">{cart.length}</span>
+            <span className="bg-red-100 text-red-700 py-0.5 px-2 rounded-full text-xs font-bold">{cart.length}</span>
           </h2>
           
-          <div className="border border-gray-100 rounded-lg max-h-[250px] overflow-y-auto bg-gray-50/50">
+          <div className="border border-gray-100 rounded-lg max-h-[160px] sm:max-h-[190px] overflow-y-auto bg-gray-50/50">
             {cart.length === 0 ? (
-              <p className="text-center text-gray-400 py-6 text-sm">No hay artículos en la lista.</p>
+              <p className="text-center text-gray-400 py-4 text-xs">No hay artículos en la lista.</p>
             ) : (
               <ul className="divide-y divide-gray-100">
                 {cart.map(c => (
-                  <li key={c.producto_id} className="p-3 flex justify-between items-center bg-white">
-                    <div className="min-w-0 pr-3">
-                      <p className="text-sm font-bold text-gray-800 truncate" title={c.producto_nombre}>{c.producto_nombre}</p>
-                      <p className="text-xs text-gray-500 font-medium">{c.cantidad} unidades</p>
+                  <li key={c.producto_id} className="p-2 sm:p-2.5 flex justify-between items-center bg-white text-xs">
+                    <div className="min-w-0 pr-2">
+                      <p className="font-bold text-gray-800 truncate" title={c.producto_nombre}>{c.producto_nombre}</p>
+                      <p className="text-[11px] text-gray-500 font-medium">{c.cantidad} unidades</p>
                     </div>
                     <button 
                       onClick={() => handleRemoveFromCart(c.producto_id)}
-                      className="text-red-400 hover:text-red-600 p-1.5 hover:bg-red-50 rounded-lg transition-colors"
+                      className="text-red-400 hover:text-red-600 p-1 hover:bg-red-50 rounded transition-colors"
                       title="Quitar"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} />
                     </button>
                   </li>
                 ))}
@@ -341,11 +342,11 @@ export default function Movimientos() {
           <button 
             onClick={handleSubmitBatch}
             disabled={cart.length === 0 || isSubmitting}
-            className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+            className="w-full py-2.5 px-3 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-xs text-xs sm:text-sm"
           >
             {isSubmitting ? 'Registrando Lote...' : (
               <>
-                <Save size={20} />
+                <Save size={16} />
                 Confirmar {formData.tipo}
               </>
             )}
@@ -355,14 +356,14 @@ export default function Movimientos() {
       </div>
 
       {/* Historial Panel */}
-      <div className="flex-1 bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-120px)]">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <h2 className="text-xl font-bold text-gray-800">Historial Reciente</h2>
+      <div className="flex-1 w-full bg-white p-3.5 sm:p-4 rounded-xl shadow-xs border border-gray-100 flex flex-col min-w-0 min-h-[500px] xl:min-h-0 xl:h-[calc(100vh-85px)]">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2.5">
+          <h2 className="text-base sm:text-lg font-bold text-gray-800">Historial Reciente</h2>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <input 
               type="text" 
-              placeholder="Buscar (artículo, persona, tipo, observación)..." 
-              className="p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500 text-sm flex-1 sm:w-64"
+              placeholder="Buscar (artículo, persona, tipo, obs)..." 
+              className="p-1.5 sm:p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-500 text-xs sm:text-sm flex-1 sm:w-60"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -371,28 +372,28 @@ export default function Movimientos() {
             />
             <button 
               onClick={handleDownloadCSV}
-              className="bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 rounded-lg flex items-center gap-2 text-sm font-medium shrink-0"
+              className="bg-gray-800 hover:bg-gray-900 text-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg flex items-center gap-1.5 text-xs font-medium shrink-0"
               title="Descargar CSV"
             >
-              <Download size={16} />
-              <span className="hidden sm:inline">Descargar</span>
+              <Download size={14} />
+              <span className="hidden sm:inline">Exportar CSV</span>
             </button>
           </div>
         </div>
         
         <div className="overflow-x-auto flex-1 border border-gray-100 rounded-lg">
           <table className="w-full text-left border-collapse">
-            <thead className="sticky top-0 bg-gray-50 z-10 shadow-sm">
-              <tr className="border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wider">
-                <th className="p-4 font-semibold">Fecha</th>
-                <th className="p-4 font-semibold">Tipo</th>
-                <th className="p-4 font-semibold">Artículo</th>
-                <th className="p-4 font-semibold">Entregado A</th>
-                <th className="p-4 font-semibold text-center">Cant.</th>
-                <th className="p-4 font-semibold">Observaciones</th>
+            <thead className="sticky top-0 bg-gray-50 z-10 shadow-xs">
+              <tr className="border-b border-gray-100 text-[11px] text-gray-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 font-semibold whitespace-nowrap">Fecha</th>
+                <th className="px-2.5 py-2.5 font-semibold">Tipo</th>
+                <th className="px-3 py-2.5 font-semibold">Artículo</th>
+                <th className="px-3 py-2.5 font-semibold">Entregado A</th>
+                <th className="px-2.5 py-2.5 font-semibold text-center">Cant.</th>
+                <th className="px-3 py-2.5 font-semibold">Observaciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 text-sm">
+            <tbody className="divide-y divide-gray-100 text-xs">
               {paginatedMovs.map(m => {
                 const p = productos.find(prod => prod.id === m.producto_id);
                 const pe = personal.find(pers => pers.id === m.personal_id);
@@ -405,29 +406,31 @@ export default function Movimientos() {
 
                 return (
                   <tr key={m.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="p-4 whitespace-nowrap text-gray-600">
-                      {new Date(m.fecha).toLocaleString()}
+                    <td className="px-3 py-2 whitespace-nowrap text-gray-500 text-[11px]">
+                      {new Date(m.fecha).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
                     </td>
-                    <td className="p-4">
-                      <span className={'px-2 py-1 rounded text-xs font-bold ' + tipoStyle}>
+                    <td className="px-2.5 py-2 whitespace-nowrap">
+                      <span className={'px-1.5 py-0.5 rounded text-[11px] font-bold ' + tipoStyle}>
                         {m.tipo}
                       </span>
                     </td>
-                    <td className="p-4 font-medium text-gray-900">{p ? p.nombre : 'Desconocido'}</td>
-                    <td className="p-4 text-gray-600 text-xs">
+                    <td className="px-3 py-2 font-medium text-gray-900 truncate max-w-[150px] xl:max-w-[220px]" title={p ? p.nombre : 'Desconocido'}>
+                      {p ? p.nombre : 'Desconocido'}
+                    </td>
+                    <td className="px-3 py-2 text-gray-600 text-[11px] truncate max-w-[130px] xl:max-w-[180px]" title={pe ? pe.nombres + ' ' + pe.apellidos : ''}>
                       {pe ? pe.nombres + ' ' + pe.apellidos : <span className="text-gray-400 italic">No asignado</span>}
                     </td>
-                    <td className="p-4 text-center font-bold text-gray-900">{m.cantidad}</td>
-                    <td className="p-4 text-xs text-gray-600 max-w-[240px]">
+                    <td className="px-2.5 py-2 text-center font-bold text-gray-900">{m.cantidad}</td>
+                    <td className="px-3 py-2 text-gray-600 max-w-[150px] xl:max-w-[220px]">
                       {m.observaciones ? (
                         <span 
-                          className="inline-block bg-gray-50 border border-gray-200 px-2.5 py-1 rounded text-gray-700 truncate max-w-full font-medium" 
+                          className="inline-block bg-gray-50 border border-gray-200 px-2 py-0.5 rounded text-[11px] text-gray-700 truncate max-w-full font-medium" 
                           title={m.observaciones}
                         >
                           {m.observaciones}
                         </span>
                       ) : (
-                        <span className="text-gray-400 italic">-</span>
+                        <span className="text-gray-400 italic text-[11px]">-</span>
                       )}
                     </td>
                   </tr>
@@ -435,7 +438,7 @@ export default function Movimientos() {
               })}
               {paginatedMovs.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-500">
+                  <td colSpan={6} className="p-6 text-center text-gray-500 text-xs">
                     No se encontraron movimientos.
                   </td>
                 </tr>
@@ -446,24 +449,24 @@ export default function Movimientos() {
 
         {/* Paginación */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-            <p className="text-sm text-gray-500">
-              Mostrando página <span className="font-bold">{page}</span> de <span className="font-bold">{totalPages}</span>
+          <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-gray-100 text-xs">
+            <p className="text-gray-500">
+              Página <span className="font-bold">{page}</span> de <span className="font-bold">{totalPages}</span> ({filteredMovs.length} total)
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-1.5">
               <button 
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 text-gray-600"
+                className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 text-gray-600"
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={16} />
               </button>
               <button 
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 text-gray-600"
+                className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 text-gray-600"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={16} />
               </button>
             </div>
           </div>

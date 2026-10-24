@@ -183,97 +183,99 @@ export default function Personal() {
   };
 
   return (
-    <div className="p-4 md:p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Directorio de Personal</h1>
+    <div className="p-2 sm:p-3 lg:p-4 w-full">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Directorio de Personal</h1>
         
-        <div className="flex flex-wrap w-full md:w-auto gap-3">
-          <div className="relative w-full md:w-64">
+        <div className="flex flex-wrap w-full md:w-auto gap-2.5">
+          <div className="relative w-full md:w-60">
             <input 
               type="text" 
               placeholder="Buscar por nombre o DNI..." 
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              className="w-full pl-9 pr-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+            <Search className="absolute left-2.5 top-2 sm:top-2.5 text-gray-400" size={16} />
           </div>
           
           <button 
             onClick={exportToExcel}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
           >
-            <Download size={20} />
+            <Download size={16} />
             <span className="hidden sm:inline">Exportar Excel</span>
           </button>
 
           <button 
             onClick={openRegisterModal}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
           >
-            <Plus size={20} />
+            <Plus size={16} />
             <span className="hidden sm:inline">Nuevo Trabajador</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100 text-sm text-gray-500 uppercase tracking-wider">
-                <th className="p-4 font-medium">N° Doc (DNI)</th>
-                <th className="p-4 font-medium">Apellidos y Nombres</th>
-                <th className="p-4 font-medium">Cargo</th>
-                <th className="p-4 font-medium">Estado</th>
-                <th className="p-4 font-medium text-center">Acciones</th>
+              <tr className="bg-gray-50 border-b border-gray-100 text-[11px] sm:text-xs text-gray-500 uppercase tracking-wider">
+                <th className="px-3.5 py-2.5 font-semibold">N° Doc (DNI)</th>
+                <th className="px-3.5 py-2.5 font-semibold">Apellidos y Nombres</th>
+                <th className="px-3.5 py-2.5 font-semibold">Cargo</th>
+                <th className="px-3.5 py-2.5 font-semibold">Estado</th>
+                <th className="px-3.5 py-2.5 font-semibold text-center">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
               {filteredPersonal.map((p) => (
                 <tr key={p.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="p-4 text-sm text-gray-600 font-medium">{p.dni}</td>
-                  <td className="p-4 text-sm text-gray-900">
+                  <td className="px-3.5 py-2 text-gray-600 font-medium text-xs">{p.dni}</td>
+                  <td className="px-3.5 py-2 text-gray-900 font-medium">
                     {p.apellidos !== '-' ? p.apellidos : p.nombres} {p.nombres !== '-' && p.apellidos !== '-' ? p.nombres : ''}
                   </td>
-                  <td className="p-4 text-sm text-gray-500">{p.cargo}</td>
-                  <td className="p-4 text-sm font-semibold">
-                    <span className={`px-2 py-1 rounded-full text-xs ${p.estado === 'Activo' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                  <td className="px-3.5 py-2 text-gray-500 text-xs">{p.cargo}</td>
+                  <td className="px-3.5 py-2 font-semibold">
+                    <span className={`px-2 py-0.5 rounded-full text-[11px] ${p.estado === 'Activo' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {p.estado}
                     </span>
                   </td>
-                  <td className="p-4 text-sm text-center flex justify-center gap-2">
+                  <td className="px-3.5 py-2 text-center">
+                    <div className="flex justify-center items-center gap-1">
                     <button 
                       onClick={() => openHistoryModal(p)}
-                      className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                      className="p-1.5 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                       title="Ver Historial de Entregas"
                     >
-                      <History size={18} />
+                      <History size={16} />
                     </button>
                     <button 
                       onClick={() => openEditModal(p)}
-                      className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                      className="p-1.5 text-blue-500 hover:bg-blue-50 rounded transition-colors"
                       title="Editar Personal"
                     >
-                      <Edit size={18} />
+                      <Edit size={16} />
                     </button>
                     {p.estado === 'Activo' ? (
                       <button 
                         onClick={() => openCeseModal(p)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
                         title="Marcar como Cesado"
                       >
-                        <UserMinus size={18} />
+                        <UserMinus size={16} />
                       </button>
                     ) : (
                       <button 
                         onClick={() => handleReactivar(p.id)}
-                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        className="p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors"
                         title="Volver a Incorporar"
                       >
-                        <UserPlus size={18} />
+                        <UserPlus size={16} />
                       </button>
                     )}
+                    </div>
                   </td>
                 </tr>
               ))}
