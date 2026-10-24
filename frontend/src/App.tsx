@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Package, ArrowRightLeft, Menu, X, ClipboardList, Calendar, Scale, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Package, ArrowRightLeft, Menu, X, ClipboardList, Calendar, Scale, Settings, Lock } from 'lucide-react';
 
 import Inventario from './Inventario';
 import Movimientos from './Movimientos';
 import Dashboard from './Dashboard';
 import Personal from './Personal';
+import Casilleros from './Casilleros';
 import Requerimientos from './Requerimientos';
 import Calendario from './Calendario';
 import Ajustes from './Ajustes';
@@ -62,6 +63,7 @@ function App() {
           <nav className="flex-1 p-2.5 space-y-1 overflow-y-auto">
             <SidebarItem to="/" icon={LayoutDashboard} onClick={closeSidebar}>Dashboard</SidebarItem>
             <SidebarItem to="/personal" icon={Users} onClick={closeSidebar}>Personal</SidebarItem>
+            <SidebarItem to="/casilleros" icon={Lock} onClick={closeSidebar}>Casilleros</SidebarItem>
             <SidebarItem to="/inventario" icon={Package} onClick={closeSidebar}>Inventario</SidebarItem>
             <SidebarItem to="/movimientos" icon={ArrowRightLeft} onClick={closeSidebar}>Movimientos</SidebarItem>
             <SidebarItem to="/entrega-masiva" icon={Users} onClick={closeSidebar}>Entrega Masiva</SidebarItem>
@@ -96,6 +98,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/personal" element={<Personal />} />
+                <Route path="/casilleros" element={<Casilleros />} />
                 <Route path="/inventario" element={<Inventario />} />
                 <Route path="/movimientos" element={<Movimientos />} />
                 <Route path="/entrega-masiva" element={<EntregaMasiva />} />

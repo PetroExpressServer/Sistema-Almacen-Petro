@@ -43,11 +43,19 @@ app.get('/api/personal', async (req, res) => {
 });
 
 app.post('/api/personal', async (req, res) => {
-  const { nombres, apellidos, dni, cargo, epps } = req.body;
+  const { nombres, apellidos, dni, cargo, casillero, epps } = req.body;
   try {
     const result = await prisma.$transaction(async (tx) => {
       const nuevo = await tx.personal.create({
-        data: { nombres, apellidos, dni, cargo, estado: 'Activo', fecha_ingreso: new Date() },
+        data: { 
+          nombres, 
+          apellidos, 
+          dni, 
+          cargo, 
+          casillero: casillero ? String(casillero).trim() : null,
+          estado: 'Activo', 
+          fecha_ingreso: new Date() 
+        },
       });
 
       if (epps && Array.isArray(epps)) {
@@ -103,15 +111,35 @@ app.get('/api/personal/:id/equipamiento', async (req, res) => {
 
 app.put('/api/personal/:id', async (req, res) => {
   const { id } = req.params;
-  const { nombres, apellidos, dni, cargo } = req.body;
+  const { nombres, apellidos, dni, cargo, casillero } = req.body;
   try {
+    const dataToUpdate: any = { nombres, apellidos, dni, cargo };
+    if (casillero !== undefined) {
+      dataToUpdate.casillero = casillero ? String(casillero).trim() : null;
+    }
     const actualizado = await prisma.personal.update({
       where: { id: Number(id) },
-      data: { nombres, apellidos, dni, cargo },
+      data: dataToUpdate,
     });
     res.json(actualizado);
   } catch (error) {
     res.status(400).json({ error: 'Error al actualizar personal' });
+  }
+});
+
+app.put('/api/personal/:id/casillero', async (req, res) => {
+  const { id } = req.params;
+  const { casillero } = req.body;
+  try {
+    const actualizado = await prisma.personal.update({
+      where: { id: Number(id) },
+      data: {
+        casillero: casillero && String(casillero).trim() !== '' ? String(casillero).trim() : null
+      },
+    });
+    res.json(actualizado);
+  } catch (error) {
+    res.status(400).json({ error: 'Error al actualizar casillero' });
   }
 });
 

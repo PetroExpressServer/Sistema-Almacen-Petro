@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, UserMinus, UserPlus, Plus, X, Download, Edit, History } from 'lucide-react';
+import { Search, UserMinus, UserPlus, Plus, X, Download, Edit, History, Lock } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 export default function Personal() {
@@ -20,6 +20,7 @@ export default function Personal() {
     apellidos: '',
     nombres: '',
     cargo: '',
+    casillero: '',
     epps: [] // { producto_id, cantidad, maxStock }
   });
 
@@ -48,7 +49,8 @@ export default function Personal() {
           dni: formData.dni,
           apellidos: formData.apellidos,
           nombres: formData.nombres,
-          cargo: formData.cargo
+          cargo: formData.cargo,
+          casillero: formData.casillero
         });
         alert('Personal actualizado con éxito');
       } else {
@@ -64,7 +66,7 @@ export default function Personal() {
 
   const openRegisterModal = () => {
     setEditingId(null);
-    setFormData({ dni: '', apellidos: '', nombres: '', cargo: '', epps: [] });
+    setFormData({ dni: '', apellidos: '', nombres: '', cargo: '', casillero: '', epps: [] });
     setIsModalOpen(true);
   };
 
@@ -75,6 +77,7 @@ export default function Personal() {
       apellidos: p.apellidos !== '-' ? p.apellidos : '',
       nombres: p.nombres !== '-' ? p.nombres : '',
       cargo: p.cargo,
+      casillero: p.casillero || '',
       epps: [] // No editamos epps iniciales aquí
     });
     setIsModalOpen(true);
@@ -83,7 +86,7 @@ export default function Personal() {
   const closeRegisterModal = () => {
     setIsModalOpen(false);
     setEditingId(null);
-    setFormData({ dni: '', apellidos: '', nombres: '', cargo: '', epps: [] });
+    setFormData({ dni: '', apellidos: '', nombres: '', cargo: '', casillero: '', epps: [] });
   };
 
   const openHistoryModal = async (persona: any) => {
@@ -149,6 +152,7 @@ export default function Personal() {
       "DNI": p.dni,
       "Apellidos y Nombres": p.apellidos !== '-' ? p.apellidos : p.nombres,
       "Cargo": p.cargo,
+      "Casillero": p.casillero || 'Sin asignar',
       "Estado": p.estado,
       "Fecha Ingreso": p.fecha_ingreso ? new Date(p.fecha_ingreso).toLocaleDateString() : '',
       "Fecha Cese": p.fecha_cese ? new Date(p.fecha_cese).toLocaleDateString() : ''
@@ -158,7 +162,7 @@ export default function Personal() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Personal");
     
-    worksheet['!cols'] = [{wch: 12}, {wch: 35}, {wch: 30}, {wch: 10}, {wch: 15}, {wch: 15}];
+    worksheet['!cols'] = [{wch: 12}, {wch: 35}, {wch: 25}, {wch: 15}, {wch: 10}, {wch: 15}, {wch: 15}];
 
     XLSX.writeFile(workbook, "Reporte_Personal.xlsx");
   };
@@ -225,6 +229,7 @@ export default function Personal() {
                 <th className="px-3.5 py-2.5 font-semibold">N° Doc (DNI)</th>
                 <th className="px-3.5 py-2.5 font-semibold">Apellidos y Nombres</th>
                 <th className="px-3.5 py-2.5 font-semibold">Cargo</th>
+                <th className="px-3.5 py-2.5 font-semibold">Casillero</th>
                 <th className="px-3.5 py-2.5 font-semibold">Estado</th>
                 <th className="px-3.5 py-2.5 font-semibold text-center">Acciones</th>
               </tr>
@@ -237,6 +242,15 @@ export default function Personal() {
                     {p.apellidos !== '-' ? p.apellidos : p.nombres} {p.nombres !== '-' && p.apellidos !== '-' ? p.nombres : ''}
                   </td>
                   <td className="px-3.5 py-2 text-gray-500 text-xs">{p.cargo}</td>
+                  <td className="px-3.5 py-2 text-xs">
+                    {p.casillero ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                        <Lock size={11} /> {p.casillero}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 italic text-[11px]">-</span>
+                    )}
+                  </td>
                   <td className="px-3.5 py-2 font-semibold">
                     <span className={`px-2 py-0.5 rounded-full text-[11px] ${p.estado === 'Activo' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {p.estado}
@@ -281,7 +295,7 @@ export default function Personal() {
               ))}
               {filteredPersonal.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-gray-500">
+                  <td colSpan={6} className="p-8 text-center text-gray-500">
                     No se encontró personal.
                   </td>
                 </tr>
@@ -344,6 +358,16 @@ export default function Personal() {
                   className="w-full p-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                   value={formData.cargo}
                   onChange={(e) => setFormData({...formData, cargo: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">N° Casillero (Opcional)</label>
+                <input 
+                  type="text" 
+                  placeholder="Ej: 15, C-04..."
+                  className="w-full p-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                  value={formData.casillero}
+                  onChange={(e) => setFormData({...formData, casillero: e.target.value})}
                 />
               </div>
               

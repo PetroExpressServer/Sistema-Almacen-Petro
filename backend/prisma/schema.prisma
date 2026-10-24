@@ -16,6 +16,7 @@ model Personal {
   estado        String       @default("Activo") // Activo, Cesado
   fecha_ingreso DateTime?
   fecha_cese    DateTime?
+  casillero     String?
   movimientos   Movimiento[]
 }
 
